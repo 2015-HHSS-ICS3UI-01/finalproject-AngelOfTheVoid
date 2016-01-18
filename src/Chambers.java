@@ -32,11 +32,8 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     ArrayList<Rectangle> walls = new ArrayList<>();
     //arraylist for grav-Erevators(elevator like things)
     ArrayList<Rectangle> grav = new ArrayList<>();
-   //Array list for collectable cubes 
+    //Array list for collectable cubes 
     ArrayList<Rectangle> pellet = new ArrayList<>();
-    
-    
-    
     boolean inAir = false;
     boolean pLeft = false;
     boolean pRight = false;
@@ -49,10 +46,13 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     int frameCount = 0;
     int gravity = 1;
     int points = 0;
-     int pelletSpot = (int)(Math.random()*24) + 1;
-  //if i feeling like putting lives in . AKA if their is time
+    int pelletSpot = (int) (Math.random() * 24) + 1;
+    int pelletLocX = 50;
+    int PelletLocy =50;
+    //if i feeling like putting lives in . AKA if their is time
     int lives = 3;
     BufferedImage CUBE = loadImage("CUBE.PNG");
+
     public BufferedImage loadImage(String filename) {
         BufferedImage img = null;
         try {
@@ -88,16 +88,16 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
             g.fillRect(block.x, block.y, block.width, block.height);
         }
 //pellets
-        for (Rectangle block : pellet){
+        for (Rectangle block : pellet) {
             g.setColor(Color.YELLOW);
-            g.fillRect(block.x,block.y, block.width, block.height);
+            g.fillRect(block.x, block.y, block.width, block.height);
         }
 
 
 
         g.setColor(Color.BLACK);
         g.fillRect(player.x, player.y, player.width, player.height);
-g.drawImage(CUBE, player.x, player.y,player.width,player.height, null);
+        g.drawImage(CUBE, player.x, player.y, player.width, player.height, null);
         // GAME DRAWING ENDS HERE
     }
 
@@ -137,11 +137,11 @@ g.drawImage(CUBE, player.x, player.y,player.width,player.height, null);
         grav.add(new Rectangle(310, 0, 45, 9000));
         grav.add(new Rectangle(440, 0, 45, 9000));
 
-        
+
         //pellets
-        pellet.add(new Rectangle (50,50,25,25));
+        pellet.add(new Rectangle(50, 50, 25, 25));
         
-        
+
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
         long startTime;
@@ -257,15 +257,140 @@ g.drawImage(CUBE, player.x, player.y,player.width,player.height, null);
             }
 
 //pellets 
-            for (Rectangle block : pellet){
-                if(player.intersects(block)){
-                   
-                    block.x = 1000;
-                    points = points +1;
+            for (Rectangle block : pellet) {
+                if (player.intersects(block)) {
+
+
+                    points = points + 1;
+                   //far left pellet spots
+                    if (pelletSpot == 1) {
+                        block.x = 50;
+                        block.y = 50;
+                    }
+                    if (pelletSpot == 2) {
+                        block.x = 50;
+                        block.y = 150;
+                    }
+                    if (pelletSpot == 3) {
+                        block.x = 50;
+                        block.y = 250;
+                    }
+                    if (pelletSpot == 4) {
+                        block.x = 50;
+                        block.y = 350;
+                    }
+                    if (pelletSpot == 5) {
+                        block.x = 50;
+                        block.y = 450;
+                    }
+                    if (pelletSpot == 6) {
+                        block.x = 50;
+                        block.y = 550;
+                    }
+                  //left pellet spots
+                    if (pelletSpot == 7) {
+                        block.x = 200;
+                        block.y = 50;
+                    }
+                    if (pelletSpot == 8) {
+                        block.x = 200;
+                        block.y = 150;
+                    }
+                    if (pelletSpot == 9) {
+                        block.x = 200;
+                        block.y = 250;
+                    }
+                    if (pelletSpot == 10) {
+                        block.x = 200;
+                        block.y = 350;
+                    }
+                    if (pelletSpot == 11) {
+                        block.x = 200;
+                        block.y = 450;
+                    }
+                    if (pelletSpot == 12) {
+                        block.x = 200;
+                        block.y = 550;
+                    }
+                   //mid
+                    if (pelletSpot == 13) {
+                        block.x = 390;
+                        block.y = 50;
+                    }
+                    if (pelletSpot == 14) {
+                        block.x = 390;
+                        block.y = 150;
+                    }
+                    if (pelletSpot == 15) {
+                        block.x = 390;
+                        block.y = 250;
+                    }
+                    if (pelletSpot == 16) {
+                        block.x = 390;
+                        block.y = 350;
+                    }
+                    if (pelletSpot == 17) {
+                        block.x = 390;
+                        block.y = 450;
+                    }
+                    if (pelletSpot == 18) {
+                        block.x = 390;
+                        block.y = 550;
+                    }
+                   //right
+                    if (pelletSpot == 19) {
+                        block.x = 510;
+                        block.y = 50;
+                    }
+                    if (pelletSpot == 20) {
+                        block.x = 510;
+                        block.y = 150;
+                    }
+                    if (pelletSpot == 21) {
+                        block.x = 510;
+                        block.y = 250;
+                    }
+                    if (pelletSpot == 22) {
+                        block.x = 510;
+                        block.y = 350;
+                    }
+                    if (pelletSpot == 23) {
+                        block.x = 510;
+                        block.y = 450;
+                    }
+                    if (pelletSpot == 24) {
+                        block.x = 510;
+                        block.y = 550;
+                    }
+                   //far right
+                    if (pelletSpot == 25) {
+                        block.x = 750;
+                        block.y = 50;
+                    }
+                    if (pelletSpot == 26) {
+                        block.x = 750;
+                        block.y = 150;
+                    }
+                    if (pelletSpot == 27) {
+                        block.x = 750;
+                        block.y = 250;
+                    }
+                    if (pelletSpot == 28) {
+                        block.x = 750;
+                        block.y = 350;
+                    }
+                    if (pelletSpot == 29) {
+                        block.x = 750;
+                        block.y = 450;
+                    }
+                    if (pelletSpot == 30) {
+                        block.x = 750;
+                        block.y = 550;
+                    }
                 }
             }
 
-
+//changes pellet location randomly
 
 
 

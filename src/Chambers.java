@@ -34,6 +34,8 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     ArrayList<Rectangle> grav = new ArrayList<>();
     //Array list for collectable cubes 
     ArrayList<Rectangle> pellet = new ArrayList<>();
+    //Array list for deadly red squares
+    ArrayList<Rectangle> bullet = new ArrayList<>();
     boolean inAir = false;
     boolean pLeft = false;
     boolean pRight = false;
@@ -46,7 +48,7 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     int frameCount = 0;
     int gravity = 1;
     int points = 0;
-    int pelletSpot = (int) (Math.random() * 24) + 1;
+    
     int pelletLocX = 50;
     int PelletLocy =50;
     //if i feeling like putting lives in . AKA if their is time
@@ -98,6 +100,10 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         g.setColor(Color.BLACK);
         g.fillRect(player.x, player.y, player.width, player.height);
         g.drawImage(CUBE, player.x, player.y, player.width, player.height, null);
+        
+        g.setColor(Color.red);
+        
+        
         // GAME DRAWING ENDS HERE
     }
 
@@ -141,6 +147,9 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         //pellets
         pellet.add(new Rectangle(50, 50, 25, 25));
         
+        //bullet projectile
+       //down left elevator
+        bullet.add(new Rectangle(310,45,45,45));
 
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
@@ -156,7 +165,8 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
 
             // all your game rules and move is done in here
             // GAME LOGIC STARTS HERE 
-
+            //generates random pellet location
+            int pelletSpot = (int) (Math.random() * 29) + 1;
 
             //player movement
             if (pLeft) {
@@ -262,7 +272,8 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
 
 
                     points = points + 1;
-                   //far left pellet spots
+                  //changes pellet location randomly
+                    //far left pellet spots
                     if (pelletSpot == 1) {
                         block.x = 50;
                         block.y = 50;
@@ -390,7 +401,7 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 }
             }
 
-//changes pellet location randomly
+
 
 
 

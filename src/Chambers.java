@@ -34,15 +34,19 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     ArrayList<Rectangle> grav = new ArrayList<>();
     //Array list for collectable cubes 
     ArrayList<Rectangle> pellet = new ArrayList<>();
-    //Array list for deadly red squares
+    //Array list for deadly red squares in evlevators
     ArrayList<Rectangle> bullet = new ArrayList<>();
+    //array list for the horizontal projeciles A
+    ArrayList<Rectangle> shot = new ArrayList<>();
+    //array list for x axis 2
+    ArrayList<Rectangle> shotB = new ArrayList<>();
     boolean inAir = false;
     boolean pLeft = false;
     boolean pRight = false;
     boolean pjump = false;
     boolean prevJump = false;
     boolean elevator = false;
-    Rectangle player = new Rectangle(390, 300, 25, 25);
+    Rectangle player = new Rectangle(390, 300, 20, 20);
     int moveX = 0;
     int movey = 0;
     int frameCount = 0;
@@ -89,21 +93,36 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
             g.setColor(Color.MAGENTA);
             g.fillRect(block.x, block.y, block.width, block.height);
         }
-//pellets
+
+
+  //draws killing red squres of death in elevaters
+        for(Rectangle shell :bullet){
+        g.setColor(Color.red);
+        g.fillRect(shell.x, shell.y, shell.height, shell.width);
+        }
+
+        //draws killing red squres of death on the x axis
+        for(Rectangle shell:shot){
+        g.setColor(Color.red);
+        g.fillRect(shell.x, shell.y, shell.height, shell.width);
+        }
+        for(Rectangle shell:shotB){
+            g.setColor(Color.red);
+            g.fillRect(shell.x, shell.y, shell.height, shell.width);
+        }
+        
+        
+        //pellets
         for (Rectangle block : pellet) {
             g.setColor(Color.YELLOW);
             g.fillRect(block.x, block.y, block.width, block.height);
         }
-
-
-
+        
+        //draws player and puts cube over 
         g.setColor(Color.BLACK);
         g.fillRect(player.x, player.y, player.width, player.height);
         g.drawImage(CUBE, player.x, player.y, player.width, player.height, null);
-        
-        g.setColor(Color.red);
-        
-        
+      
         // GAME DRAWING ENDS HERE
     }
 
@@ -140,7 +159,7 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         walls.add(new Rectangle(375, 100, 50, 20));
 
         //grav-Erevators
-        grav.add(new Rectangle(310, 0, 45, 9000));
+        grav.add(new Rectangle(317, 0, 45, 9000));
         grav.add(new Rectangle(440, 0, 45, 9000));
 
 
@@ -148,9 +167,16 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         pellet.add(new Rectangle(50, 50, 25, 25));
         
         //bullet projectile
-       //down left elevator
-        bullet.add(new Rectangle(310,45,45,45));
-
+       //down elevators
+        bullet.add(new Rectangle(317,45,45,45));
+        bullet.add(new Rectangle(440,250,45,45));
+        
+        //on x axis
+        shot.add(new Rectangle(760,70,25,30));
+        shot.add(new Rectangle(760,570,25,30));
+        
+        shotB.add(new Rectangle(760,170,25,30));
+        shotB.add(new Rectangle(760,470,25,30));
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
         long startTime;
@@ -207,7 +233,7 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 inAir = true;
             }
 
-            //wall jump
+            
 
 
             // if feet of player become lower than the screen   
@@ -401,8 +427,38 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 }
             }
 
+            //bullet muder + move abilty
+            for(Rectangle shell: bullet){
+              shell.y ++;
+              if(shell.y >600){
+                shell.y = 0;
+            }
+                if(player.intersects(shell)){
+                    player.x = 390;
+                    player.y =300;
+                    lives --;
+                    
+                }
+            }
 
-
+            for(Rectangle shell: shot){
+                
+                
+               if(shell.x <0){
+                   shell.x = 760;
+               }
+                
+                if(points >= 5){
+                    
+                    shell.x --;
+            if(player.intersects(shell)){
+                 player.x = 390;
+                    player.y =300;
+                    lives --;
+            }
+                }
+                
+            }
 
 
             // GAME LOGIC ENDS HERE 

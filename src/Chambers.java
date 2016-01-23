@@ -38,8 +38,10 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     ArrayList<Rectangle> bullet = new ArrayList<>();
     //array list for the horizontal projeciles A
     ArrayList<Rectangle> shot = new ArrayList<>();
-    //array list for x axis 2
+    //array list for x axis shots 2
     ArrayList<Rectangle> shotB = new ArrayList<>();
+    //array list for x axis shots 3
+    ArrayList<Rectangle> shotC = new ArrayList<>();
     boolean inAir = false;
     boolean pLeft = false;
     boolean pRight = false;
@@ -47,6 +49,8 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
     boolean prevJump = false;
     boolean elevator = false;
     Rectangle player = new Rectangle(390, 300, 20, 20);
+   Rectangle win = new Rectangle(1000,1000,800,600);
+   Rectangle loose = new Rectangle(1000,1000,800,600);
     int moveX = 0;
     int movey = 0;
     int frameCount = 0;
@@ -111,6 +115,10 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
             g.fillRect(shell.x, shell.y, shell.height, shell.width);
         }
         
+        for(Rectangle shell:shotC){
+            g.setColor(Color.RED);
+    g.fillRect(shell.x, shell.y, shell.height, shell.width);
+        }
         
         //pellets
         for (Rectangle block : pellet) {
@@ -119,10 +127,15 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         }
         
         //draws player and puts cube over 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.CYAN);
         g.fillRect(player.x, player.y, player.width, player.height);
         g.drawImage(CUBE, player.x, player.y, player.width, player.height, null);
       
+        
+        // win/loose screens
+        g.setColor(Color.BLACK);
+        g.fillRect(loose.x, loose.y, loose.width, loose.height);
+        g.fillRect(win.x, win.y, win.width, win.height);
         // GAME DRAWING ENDS HERE
     }
 
@@ -171,12 +184,15 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
         bullet.add(new Rectangle(317,45,45,45));
         bullet.add(new Rectangle(440,250,45,45));
         
-        //on x axis
-        shot.add(new Rectangle(760,70,25,30));
-        shot.add(new Rectangle(760,570,25,30));
+        //shots on x axis
+        shot.add(new Rectangle(760,80,10,10));
+        shot.add(new Rectangle(10,580,10,10));
         
-        shotB.add(new Rectangle(760,170,25,30));
-        shotB.add(new Rectangle(760,470,25,30));
+        shotB.add(new Rectangle(760,190,10,10));
+        shotB.add(new Rectangle(10,480,10,10));
+        
+        shotC.add(new Rectangle(760,290,10,10));
+        shotC.add(new Rectangle(15,380,10,10));
         // Used to keep track of time used to draw and update the game
         // This is used to limit the framerate later on
         long startTime;
@@ -193,7 +209,18 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
             // GAME LOGIC STARTS HERE 
             //generates random pellet location
             int pelletSpot = (int) (Math.random() * 29) + 1;
-
+      //if player collects 20 pellets win screen is displaed 
+            if(points == 20){
+            win.x =0;
+                win.y = 0;
+      }
+        //if player looses all lives Lose scrren
+            if(lives == 0){
+                loose.x =0;
+                loose.y = 0;
+            }
+            
+      
             //player movement
             if (pLeft) {
                 moveX = -3;
@@ -297,7 +324,7 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 if (player.intersects(block)) {
 
 
-                    points = points + 1;
+                    points ++;
                   //changes pellet location randomly
                     //far left pellet spots
                     if (pelletSpot == 1) {
@@ -430,6 +457,9 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
             //bullet muder + move abilty
             for(Rectangle shell: bullet){
               shell.y ++;
+              if(points >= 10){
+                        shell.y +=3;
+                    }
               if(shell.y >600){
                 shell.y = 0;
             }
@@ -451,6 +481,9 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 if(points >= 5){
                     
                     shell.x --;
+                    if(points >= 10){
+                        shell.x -=3;
+                    }
             if(player.intersects(shell)){
                  player.x = 390;
                     player.y =300;
@@ -459,8 +492,50 @@ public class Chambers extends JComponent implements KeyListener, MouseMotionList
                 }
                 
             }
-
-
+ for(Rectangle shell: shotB){
+                
+                
+               if(shell.x <0){
+                   shell.x = 760;
+               }
+                
+                if(points >= 5){
+                   if(points >= 10){
+                        shell.x -=3;
+                    } 
+                    shell.x --;
+            if(player.intersects(shell)){
+                 player.x = 390;
+                    player.y =300;
+                    lives --;
+            }
+                }
+                
+            }
+            for(Rectangle shell: shotC){
+                
+                
+               if(shell.x >800){
+                   shell.x = 0;
+               }
+                
+                if(points >= 5){
+                    
+                    shell.x ++;
+                    if(points >= 10){
+                        shell.x +=3;
+                    }
+            if(player.intersects(shell)){
+                 player.x = 390;
+                    player.y =300;
+                    lives --;
+            }
+                }
+                
+            }
+            
+            
+            System.out.println(points);
             // GAME LOGIC ENDS HERE 
 
             // update the drawing (calls paintComponent)
